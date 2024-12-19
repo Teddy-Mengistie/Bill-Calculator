@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -32,8 +34,7 @@
     }
 
     .container {
-      max-width: 800px;
-      margin: 15px auto;
+      max-width: 100%;
       padding: 15px;
       background-color: var(--container-light);
       border-radius: 8px;
@@ -51,12 +52,13 @@
 
     input, button, .toggle-switch {
       width: calc(100% - 20px);
-      padding: 8px;
+      padding: 10px;
       margin-bottom: 10px;
       font-size: 14px;
       border: 1px solid #ccc;
       border-radius: 4px;
       transition: all 0.3s ease;
+      box-sizing: border-box;
     }
 
     button {
@@ -117,8 +119,8 @@
     #result {
       margin-top: 15px;
       padding: 15px;
-      background-color: var(--background-light); /* Default light mode background */
-      color: var(--text-light); /* Default light mode text */
+      background-color: var(--background-light); 
+      color: var(--text-light); 
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       transition: background-color 0.3s, color 0.3s;
@@ -128,8 +130,8 @@
     .dark-mode #result,
     .dark-mode body,
     .dark-mode .container {
-      background-color: var(--container-dark); /* Dark mode background */
-      color: var(--text-dark); /* Dark mode text */
+      background-color: var(--container-dark); 
+      color: var(--text-dark); 
     }
 
     ul {
@@ -138,11 +140,16 @@
     }
 
     li {
-      padding: 6px;
+      padding: 10px;
       background: #f9f9f9;
       border-radius: 5px;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode li {
+      background: #333;
+      color: white;
     }
 
     li small {
@@ -153,7 +160,7 @@
     }
 
     canvas {
-      max-width: 400px;
+      max-width: 100%;
       margin: 0 auto;
     }
 
@@ -176,6 +183,13 @@
       to {
         opacity: 1;
         transform: translateX(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      input, button, .toggle-switch {
+        width: 100%;
+        padding: 12px;
       }
     }
   </style>
@@ -220,7 +234,7 @@
     function addPeopleInputs() {
       const numPeople = document.getElementById('numPeople').value;
       const peopleInputs = document.getElementById('peopleInputs');
-      peopleInputs.innerHTML = ''; // Clear previous inputs
+      peopleInputs.innerHTML = ''; 
       for (let i = 1; i <= numPeople; i++) {
         const personDiv = document.createElement('div');
         personDiv.className = 'person-input';
@@ -239,7 +253,6 @@
       const specialPerson = document.getElementById('specialPerson').value || "";
       let totalFoodCost = 0;
 
-      // Gather food costs and calculate total food cost
       foodCosts = {};
       for (let i = 1; i <= numPeople; i++) {
         const name = document.getElementById(`personName${i}`).value || `Person ${i}`;
@@ -248,12 +261,11 @@
         totalFoodCost += cost;
       }
 
-      // Calculate remaining costs
       const specialPersonCost = foodCosts[specialPerson] || 0;
       const proportionalTaxForSpecial = (specialPersonCost / totalFoodCost) * tax;
       const proportionalServiceFeeForSpecial = (specialPersonCost / totalFoodCost) * serviceFee;
       const remainingCost = totalFoodCost + tax + serviceFee - specialPersonCost - proportionalTaxForSpecial - proportionalServiceFeeForSpecial;
-      const payingPeople = Object.keys(foodCosts).length - 1; // Exclude special person
+      const payingPeople = Object.keys(foodCosts).length - 1;
 
       const resultDiv = document.getElementById('result');
       resultDiv.innerHTML = `<p><strong>Total Food Cost:</strong> $${totalFoodCost.toFixed(2)}</p>`;
@@ -272,7 +284,7 @@
           breakdown.appendChild(item);
           continue;
         }
-        
+
         const proportionalTax = (foodCost / totalFoodCost) * tax;
         const proportionalServiceFee = (foodCost / totalFoodCost) * serviceFee;
         const sharedSpecialCost = (specialPersonCost + proportionalTaxForSpecial + proportionalServiceFeeForSpecial) / payingPeople;
@@ -285,8 +297,6 @@
       }
       resultDiv.appendChild(breakdown);
 
-      // Pie Chart
-      
       const ctx = document.getElementById('myChart').getContext('2d');
       const data = {
         labels: Object.keys(paymentBreakdown),
@@ -303,7 +313,6 @@
       };
       new Chart(ctx, config);
 
-      // Display random AOT-themed image
       displayRandomAOTImage();
     }
 
@@ -324,22 +333,11 @@
         'https://www.koeitecmoeurope.com/aot2/finalbattle/img/top/visual-img.jpg',
         'https://steamuserimages-a.akamaihd.net/ugc/2178114146517635223/8A768FA09890AE195151AABA6A4325DBF9E12A4D/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true',
         'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTZ5cTBpdWl5d3E5aWV1eHllNndycXo1dHJmYXlxbHlhaDVhamc2YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3XYuxLiRtIu76/giphy.webp',
-        'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3NlcmMwcHpjeng1ZDZ4amhkcXc0cXJsMXpqdGU3aW44MTI5c2E0eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1qGaYAEAk7eOA/giphy.webp',
-        'https://forum.treeofsavior.com/uploads/default/original/3X/5/8/585a4c54fad6842ecfebabc93112f39b7ea739f2.gif',
-        'https://64.media.tumblr.com/98539e6e6b41a730a0655573117b96f0/tumblr_mpf4ioDhv11qfei21o1_500.gif',
-        'https://images4.fanpop.com/image/photos/23400000/tama-chan-tamaki-suoh-23442507-500-259.gif',
-        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWxsc3AzMXJ4YW15YXphdXAxaGtua3VrODBnb3lqeWE0cGNmbDVlYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7Fpgr4SXs4ccE/giphy.webp',
-        'https://pa1.narvii.com/6525/d8cd1b68fa2d3804db964149deba41e070459f31_hq.gif',
-
-
+        'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3NlcmMwcHpjeng1ZDZ4amhkcXc0cXJsMXpqdGU3aW44MTI5c2E0eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9wGiVOIu7P0S4/giphy.gif',
+        'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDRjYTF3cGl6bHR4aWJpOGdqZGhrbmR6dm5nZzF3NG80ZGQ3cWI3YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2u0p9E80aa9qM/giphy.gif'
       ];
       const randomImage = images[Math.floor(Math.random() * images.length)];
-      const resultDiv = document.getElementById('result');
-      const imageElement = document.createElement('img');
-      imageElement.src = randomImage;
-      imageElement.style.maxWidth = '100%';
-      imageElement.style.margin = '10px 0';
-      resultDiv.appendChild(imageElement);
+      document.getElementById('result').style.backgroundImage = `url('${randomImage}')`;
     }
   </script>
 </body>
